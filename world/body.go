@@ -1,6 +1,7 @@
 package world
 
 import (
+	"github.com/JamesLMilner/pip-go"
 	vv "golang.org/x/image/vector"
 	"image"
 	"image/draw"
@@ -52,7 +53,17 @@ func (b *body) tick() {
 }
 
 func (b *body) collidesWith(ob *body) bool {
-	// do these shapes intersect?
+	bps := make([]pip.Point, 0, len(b.form))
+	for _, bp := range b.form {
+		bps = append(bps, pip.Point{X: bp.x + b.pos.x, Y: bp.y + b.pos.y})
+	}
+	polygon := pip.Polygon{Points: bps}
+	for _, obp := range ob.form {
+		point := pip.Point{X: obp.x + ob.pos.x, Y: obp.y + ob.pos.y}
+		if pip.PointInPolygon(point, polygon) {
+			return true
+		}
+	}
 	return false
 }
 

@@ -1,11 +1,11 @@
 package world
 
 import (
-	"fmt"
 	"github.com/charmbracelet/lipgloss"
 	vv "golang.org/x/image/vector"
 	"image"
 	"math/rand"
+	"sort"
 	"strconv"
 	"strings"
 	"sync"
@@ -22,9 +22,10 @@ type World struct {
 }
 
 func (w *World) Tick(t time.Time) {
-	// todo remove asteroids that are off the board
-	// todo remove any bullets that are off the board
-	// todo break any asteroids that have collided with a bullet
+	w.handleOutOfBoundsAsteroids() // remove asteroids that have flown off the board
+	w.handleOutOfBoundsBullets()   // remove bullets that have flown off the board
+	w.handleAsteroidCollisions()   // remove asteroids that have collided with a bullet
+
 	// todo make any players that have hit the edge of the world wrap around
 
 	for len(w.asteroids) < 6 {
@@ -36,8 +37,7 @@ func (w *World) Tick(t time.Time) {
 	for _, p := range w.players {
 		p.tick()
 	}
-	for i, b := range w.bullets {
-		fmt.Println("bullet", i, b.pos, b.vec)
+	for _, b := range w.bullets {
 		b.tick()
 	}
 }
@@ -64,6 +64,46 @@ func (w *World) PlayerJoin(playerID string, playerName string) {
 
 func (w *World) OnPlayerDeath(key string, f func()) {
 	// todo save `f` and run it when this player dies
+}
+
+func (w *World) handleAsteroidCollisions() {
+	intactAsteroids := make([]*asteroid, 0)
+	for _, a := range w.asteroids {
+		intact := true
+		for _, b := range w.bullets {
+			if b.collidesWith(&a.body) {
+				if p, ok := w.players[b.playerID]; ok {
+					p.AddPoint(1)
+				}
+				intact = false
+				break
+			}
+		}
+		if intact {
+			intactAsteroids = append(intactAsteroids, a)
+		}
+	}
+	w.asteroids = intactAsteroids
+}
+
+func (w *World) handleOutOfBoundsAsteroids() {
+	intactAsteroids := make([]*asteroid, 0)
+	for _, a := range w.asteroids {
+		if w.inBounds(int(a.pos.x), int(a.pos.y)) {
+			intactAsteroids = append(intactAsteroids, a)
+		}
+	}
+	w.asteroids = intactAsteroids
+}
+
+func (w *World) handleOutOfBoundsBullets() {
+	intactBullets := make([]*bullet, 0)
+	for _, a := range w.bullets {
+		if w.inBounds(int(a.pos.x), int(a.pos.y)) {
+			intactBullets = append(intactBullets, a)
+		}
+	}
+	w.bullets = intactBullets
 }
 
 func ansiGrey(a uint16) string {
@@ -133,13 +173,17 @@ func (w *World) FirePlayer(playerID string) {
 		vec := vector{x: p.heading.x, y: p.heading.y}
 		vec = vec.resize(2.)
 		vec = vec.add(*p.vec)
-		w.bullets = append(w.bullets, newBullet(*p.pos, vec))
+		w.bullets = append(w.bullets, newBullet(*p.pos, vec, playerID))
 	}
 }
 
 func (w *World) RenderWorldStatus() string {
-	// todo ? scores?
-	return ""
+	scores := make([]string, 0, len(w.players))
+	for _, p := range w.players {
+		scores = append(scores, p.name+": "+strconv.Itoa(p.Score()))
+	}
+	sort.Strings(scores)
+	return strings.Join(scores, " | ")
 }
 
 func (w *World) RenderPosition(id string) string {

@@ -14,8 +14,7 @@ type player struct {
 	onDeath func()
 
 	// counters
-	health    int
-	maxHealth int
+	score int
 }
 
 func newPlayer(id, name string, pos vector) *player {
@@ -28,10 +27,8 @@ func newPlayer(id, name string, pos vector) *player {
 		{0, 0},
 	}
 	return &player{
-		id:        id,
-		name:      name,
-		health:    100,
-		maxHealth: 100,
+		id:   id,
+		name: name,
 		body: body{
 			form:    pointsToVectors(points),
 			pos:     &pos,
@@ -40,6 +37,14 @@ func newPlayer(id, name string, pos vector) *player {
 			vec:     &vector{0, 0},
 		},
 	}
+}
+
+func (p *player) AddPoint(n int) {
+	p.score += n
+}
+
+func (p *player) Score() int {
+	return p.score
 }
 
 func (p *player) thrust(amount float64) {

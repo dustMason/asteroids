@@ -3,6 +3,7 @@ module github.com/dustmason/asteroids
 go 1.19
 
 require (
+	github.com/JamesLMilner/pip-go v0.0.0-20180711171552-99c4cbbc7deb
 	github.com/charmbracelet/bubbles v0.14.0
 	github.com/charmbracelet/bubbletea v0.22.1
 	github.com/charmbracelet/lipgloss v0.5.0
@@ -13,6 +14,7 @@ require (
 )
 
 require (
+	github.com/JamesMilnerUK/pip-go v0.0.0-20180711171552-99c4cbbc7deb // indirect
 	github.com/anmitsu/go-shlex v0.0.0-20200514113438-38f4b401e2be // indirect
 	github.com/aymanbagabas/go-osc52 v1.0.3 // indirect
 	github.com/caarlos0/sshmarshal v0.1.0 // indirect

@@ -4,9 +4,10 @@ import "image"
 
 type bullet struct {
 	body
+	playerID string // playerID that this bullet belongs to
 }
 
-func newBullet(pos vector, vec vector) *bullet {
+func newBullet(pos vector, vec vector, playerID string) *bullet {
 	// square shape
 	points := []image.Point{
 		{0, 0},
@@ -16,6 +17,7 @@ func newBullet(pos vector, vec vector) *bullet {
 		{0, 0},
 	}
 	return &bullet{
+		playerID: playerID,
 		body: body{
 			form:    pointsToVectors(points),
 			pos:     &pos,

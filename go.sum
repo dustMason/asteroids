@@ -1,3 +1,7 @@
+github.com/JamesLMilner/pip-go v0.0.0-20180711171552-99c4cbbc7deb h1:bjNgq82N34iXnqnnKejMvzBlOPhVZIF/7wW4nN7IZAc=
+github.com/JamesLMilner/pip-go v0.0.0-20180711171552-99c4cbbc7deb/go.mod h1:wGn12HkuV+58JRmRJS/5ARIsZIKULU14B6j16mkVqOo=
+github.com/JamesMilnerUK/pip-go v0.0.0-20180711171552-99c4cbbc7deb h1:W/OhKqLweV7gxB3c+7mFXuyfcL0U1NmoHSEzbF8EkEY=
+github.com/JamesMilnerUK/pip-go v0.0.0-20180711171552-99c4cbbc7deb/go.mod h1:gK3x51Z7zjeJDyfflentJDU2TKw093HMN8x0VnZmPWg=
 github.com/anmitsu/go-shlex v0.0.0-20200514113438-38f4b401e2be h1:9AeTilPcZAjCFIImctFaOjnTIavg87rW78vTPkQqLI8=
 github.com/anmitsu/go-shlex v0.0.0-20200514113438-38f4b401e2be/go.mod h1:ySMOLuWl6zY27l47sB3qLNK6tF2fkHG55UZxx8oIVo4=
 github.com/atotto/clipboard v0.1.4/go.mod h1:ZY9tmq7sm5xIbd9bOK4onWV4S6X0u6GY7Vn0Yu86PYI=
